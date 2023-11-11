@@ -1,4 +1,4 @@
-/*
+
 import { DataTypes, Model } from "sequelize";
 import connection from "../connection/connection.js";
 import bcrypt from "bcrypt";
@@ -57,4 +57,3 @@ User.beforeCreate(async (user) => {
 });
 
 export default User;
-*/
