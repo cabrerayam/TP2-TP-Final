@@ -7,11 +7,17 @@ Role.init(
     name: {
       type: DT.STRING,
       allowNull: false,
+      unique: true,
+      validate: {
+        notEmpty: true,
+        notNull: true,
+      },
     },
   },
   {
     sequelize: connection,
     modelName: "Role",
+    timestamps: false,
   }
 );
 
