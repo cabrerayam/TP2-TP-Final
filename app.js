@@ -7,6 +7,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/api", router);
 
+
 //force:true para volver a crear todas las tablas
 //force:false sólo para crear los nuevos modelos
 await connection.sync({ force: false }).then(() => {

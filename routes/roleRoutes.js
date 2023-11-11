@@ -1,6 +1,5 @@
 import { Router } from "express";
-import RoleController from "../controller/roleController.js";
-
+import RoleController from "../controller/RoleController.js";
 const roleRoutes = Router();
 const roleController = new RoleController();
 
@@ -10,4 +9,4 @@ roleRoutes.post("/", roleController.createRole);
 roleRoutes.put("/:id", roleController.updateRole);
 roleRoutes.delete("/:id", roleController.deleteRole);
 
-export default roleRoutes;
+export default roleRoutes; 

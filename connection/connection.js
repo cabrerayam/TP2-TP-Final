@@ -13,6 +13,4 @@ try {
     console.error('Unable to connect to database', error);
 }
 
-
-
 export default connection;
