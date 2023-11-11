@@ -10,14 +10,30 @@ User.belongsTo(Role,{
      foreignKey:"roleId"
 })
 
+User.hasMany(Pedido, {
+     foreignKey: 'userId'
+})
 
-export { User, Role };
+Pedido.belongsTo(User, {
+     foreignKey: 'userId'
+})
+
+Pedido.belongsToMany(Producto, { through: "PedidoProducto" });
+Producto.belongsToMany(Pedido, { through: "PedidoProducto" });
+
+export { User, Role, Pedido};
 
 /*
 * Usuario relacionado con roles
 La tabla de pedido va a tener muchos productos 
 
-pedido a usuario uno a uno
+pedido a usuario uno a uno (Creo que es uno a Muchos igual que Role y User)
+[un pedido puede tener a 1 solo usuario
+un usuario puede pertenecer muchos pedidos]
+
+[un usuario puede tener 1 role
+un role puede pertenecer a muchos usuarios]
+
 pedido tiene muchos productos 
 un producto tiene muchos pedidos
 tabla intermedia pedido con pedidos y productos con un controlador ProductosPedidos
