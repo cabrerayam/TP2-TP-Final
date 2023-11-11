@@ -8,19 +8,15 @@ Pedido.init(
       type: DT.INTEGER,
       allowNull: false,
     },
-  },
-
-  {
     total: {
       type: DT.DOUBLE,
       allowNull: true,
     },
   },
-
-
   {
     sequelize: connection,
     modelName: "Pedido",
+    timestamps: false,
   }
 );
 

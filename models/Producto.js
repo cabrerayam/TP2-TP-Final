@@ -8,25 +8,19 @@ Producto.init(
       type: DT.STRING,
       allowNull: false,
     },
-  },
-
-  {
     description: {
       type: DT.STRING,
       allowNull: true,
     },
-  },
-
-  {
     price: {
       type: DT.DOUBLE,
       allowNull: false,
     },
   },
-
   {
     sequelize: connection,
     modelName: "Producto",
+    timestamps: false,
   }
 );
 
