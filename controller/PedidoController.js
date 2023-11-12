@@ -4,8 +4,24 @@ class PedidoController {
   constructor() {}
 
   getAllPedidos = async (req, res) => {
-    try {
-    } catch (error) {}
+      try {
+          const result = await Pedido.findAll({
+            include: [
+              {
+                model: Producto,
+                attributes: ["id", "name", "description", "price"],
+              }
+              
+            ],
+          });
+           res.status(200).send({
+             success: true,
+             message: "Todos los pedidos",
+             data: result,
+           });
+      } catch (error) {
+          res.status(400).send({ success: false, message: error.message });
+    }
   };
 
   getPedidoById = async (req, res) => {
@@ -37,15 +53,6 @@ class PedidoController {
         //     },
         //   });
 
-          const result = await Pedido.findAll({
-            where: { id: pedidoCreado.dataValues.id },
-            include: [
-              {
-                model: Producto,
-              },
-            ],
-          });
-          console.log(result);
         res
           .status(200)
           .send({ success: true, message: "Pedido generado", data: "ok" });

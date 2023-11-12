@@ -13,7 +13,9 @@ class ProductoController {
             message: "Todos los productos",
             data: products,
           });
-    } catch (error) {}
+      } catch (error) {
+          res.status(400).send({ success: false, message: error.message });
+    }
   };
 
   getProductoById = async (req, res) => {
