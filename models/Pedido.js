@@ -4,10 +4,6 @@ import connection from "../connection/connection.js";
 class Pedido extends Model {}
 Pedido.init(
   {
-    items_quantity: {
-      type: DT.INTEGER,
-      allowNull: false,
-    },
     total: {
       type: DT.DOUBLE,
       allowNull: true,

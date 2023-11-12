@@ -2,6 +2,7 @@ import User from "./User.js";
 import Role from "./Role.js";
 import Pedido from "./Pedido.js"
 import Producto from "./Producto.js"
+import PedidoProducto from "./PedidoProducto.js";
 
 Role.hasMany(User,{
      foreignKey:'roleId',
@@ -18,10 +19,10 @@ Pedido.belongsTo(User, {
      foreignKey: 'userId'
 })
 
-Pedido.belongsToMany(Producto, { through: "PedidoProducto" });
-Producto.belongsToMany(Pedido, { through: "PedidoProducto" });
+Pedido.belongsToMany(Producto, { through: PedidoProducto });
+Producto.belongsToMany(Pedido, {through: PedidoProducto });
 
-export { User, Role, Pedido};
+export { User, Role, Pedido, Producto, PedidoProducto };
 
 /*
 * Usuario relacionado con roles
