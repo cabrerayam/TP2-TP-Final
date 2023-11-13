@@ -5,19 +5,18 @@ class PedidoController {
 
   getAllPedidos = async (req, res) => {
       try {
-          const result = await Pedido.findAll({
+          const pedido = await Pedido.findAll({
             include: [
               {
                 model: Producto,
                 attributes: ["id", "name", "description", "price"],
-              }
-              
+              },
             ],
           });
            res.status(200).send({
              success: true,
              message: "Todos los pedidos",
-             data: result,
+             data: pedido,
            });
       } catch (error) {
           res.status(400).send({ success: false, message: error.message });
@@ -25,7 +24,24 @@ class PedidoController {
   };
 
   getPedidoById = async (req, res) => {
-    try {
+      try {
+        const { id } = req.params;
+        const pedido = await Pedido.findOne({
+          where: { id },
+          include: [
+            {
+              model: Producto,
+              attributes: ["id", "name", "description", "price"],
+            },
+          ],
+        });
+          
+        if (!pedido) throw new Error("No existe pedido");
+        res.status(200).send({
+          success: true,
+          message: "Pedido by Id",
+          data: pedido,
+        });
     } catch (error) {}
   };
 
@@ -45,17 +61,13 @@ class PedidoController {
           });
         });
 
-        //   console.log("prod", prod);
-        //   console.log("pedidoProducto", pedidoProducto.items_quantity);
-        //   pedidoCreado.addProducto(prod, {
-        //     through: {
-        //       items_quantity: pedidoProducto.items_quantity,
-        //     },
-        //   });
-
         res
           .status(200)
-          .send({ success: true, message: "Pedido generado", data: "ok" });
+          .send({
+            success: true,
+            message: "Pedido generado",
+            data: pedidoCreado,
+          });
       } catch (error) {
           res.status(400).send({ success: false, message: error.message });
     }
