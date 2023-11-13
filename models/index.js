@@ -19,8 +19,16 @@ Pedido.belongsTo(User, {
      foreignKey: 'userId'
 })
 
-Pedido.belongsToMany(Producto, { through: PedidoProducto });
-Producto.belongsToMany(Pedido, {through: PedidoProducto });
+Pedido.belongsToMany(Producto, {
+  through: PedidoProducto,
+  foreignKey: "pedidoId",
+  otherKey: "productoId",
+});
+Producto.belongsToMany(Pedido, {
+  through: PedidoProducto,
+  foreignKey: "productoId",
+  otherKey: "pedidoId",
+});
 
 export { User, Role, Pedido, Producto, PedidoProducto };
 

@@ -19,8 +19,19 @@ class ProductoController {
   };
 
   getProductoById = async (req, res) => {
-    try {
-    } catch (error) {}
+      try {
+        const { id } = req.params;
+        const producto = await Producto.findOne({
+          where: { id }
+        });
+
+        if (!producto) throw new Error("No existe producto");
+        res
+          .status(200)
+          .send({ success: true, message: "Producto By Id", data: producto });
+      } catch (error) {
+          res.status(400).send({ success: false, message: error.message });
+    }
   };
 
   createProducto = async (req, res) => {

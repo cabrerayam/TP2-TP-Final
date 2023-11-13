@@ -42,7 +42,9 @@ class PedidoController {
           message: "Pedido by Id",
           data: pedido,
         });
-    } catch (error) {}
+      } catch (error) {
+        res.status(400).send({ success: false, message: error.message });
+    }
   };
 
   createPedido = async (req, res) => {
@@ -74,13 +76,61 @@ class PedidoController {
   };
 
   updatePedido = async (req, res) => {
-    try {
-    } catch (err) {}
+      try {
+        const { id } = req.params;
+        const { total, userId, productos } = req.body;
+        console.log(id, total, userId);
+        const pedidoBuscado = await Pedido.findOne({
+            where: { id },
+            
+        });
+        
+        if (!pedidoBuscado) throw new Error("No existe pedido");
+        
+        let pBuscado = true;
+        for (let i = 0; i < productos.length; i++) { 
+          let productoId = productos[i].id;
+          let productoBuscado = await Producto.findOne({
+            where: { id: productoId },
+          });
+          if (!productoBuscado) {
+            pBuscado = false;
+            break;
+          }
+        }
+
+        if(!pBuscado) throw new Error("No existe producto")
+
+        const pedido = await Pedido.update(
+          { total, userId },
+          { where: { id } }
+        );
+
+        await PedidoProducto.destroy(
+          { where: { PedidoId:id } }
+        );
+        
+        productos.map(async (p) => {
+          const { items_quantity } = p.pedidoProducto;
+          const productoId = p.id;
+          await PedidoProducto.create(
+            {pedidoId: id, productoId, items_quantity}
+          );
+        });
+
+        res.status(200).send({
+          success: true,
+          message: "Pedido modificado",
+          data: "ok",
+        });
+      } catch (error) {
+          res.status(400).send({ success: false, message: error.message });
+    }
   };
 
   deletePedido = async (req, res) => {
     try {
-    } catch (err) {}
+    } catch (error) {}
   };
 }
 
