@@ -82,7 +82,6 @@ class PedidoController {
         console.log(id, total, userId);
         const pedidoBuscado = await Pedido.findOne({
             where: { id },
-            
         });
         
         if (!pedidoBuscado) throw new Error("No existe pedido");
@@ -109,7 +108,7 @@ class PedidoController {
         await PedidoProducto.destroy(
           { where: { PedidoId:id } }
         );
-        
+
         productos.map(async (p) => {
           const { items_quantity } = p.pedidoProducto;
           const productoId = p.id;
@@ -130,7 +129,19 @@ class PedidoController {
 
   deletePedido = async (req, res) => {
     try {
-    } catch (error) {}
+      const { id } = req.params;
+      const pedido = await Pedido.destroy({
+        where: { id },
+      });
+      console.log(pedido);
+      if (pedido === 0) throw new Error("Pedido inexistente");
+
+      res
+        .status(200)
+        .send({ success: true, message: "Pedido eliminado", data: pedido });
+    } catch (error) {
+      res.status(400).send({ success: false, message: error.message });
+    }
   };
 }
 
