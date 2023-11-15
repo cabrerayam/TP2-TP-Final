@@ -40,7 +40,7 @@ class RoleController {
       if (!role) throw new Error("No se puede crear role.");
       res
         .status(200)
-        .send({ success: true, message: `Role [${name}] creado`, role });
+        .send({ success: true, message: `Role [${name}] creado`, data: role });
     } catch (error) {
       res.status(400).send({ success: false, message: error.message });
     }
@@ -59,7 +59,6 @@ class RoleController {
         }
       );
 
-      console.log(role);
       if (role[0] === 0) throw new Error(`Role ${id} inexistente o sin datos a modificar.`);
 
       res

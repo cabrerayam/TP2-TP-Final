@@ -7,13 +7,13 @@ class UserController {
     try {
       const users = await User.findAll({
         attributes: ["id", "name"],
-        include: [{ model: Role }],
+        include: [{ model: Role, attributes: ["name"] }],
       });
       res
         .status(200)
         .send({ success: true, message: "Todos los usuarios", data: users });
-    } catch (err) {
-      res.status(400).send({ success: false, message: err.message });
+    } catch (error) {
+      res.status(400).send({ success: false, message: error.message });
     }
   };
 
@@ -26,12 +26,12 @@ class UserController {
         include: [{ model: Role, attributes: ["name"] }],
       });
 
-      if (!user) throw new Error("No existe usuario");
+      if (!user) throw new Error(`No existe usuario con id ${id}`);
       res
         .status(200)
-        .send({ success: true, message: "Todos los usuarios", data: user });
-    } catch (err) {
-      res.status(400).send({ success: false, message: err.message });
+        .send({ success: true, message: "Usuario encontrado", data: user });
+    } catch (error) {
+      res.status(400).send({ success: false, message: error.message });
     }
   };
 
@@ -44,8 +44,8 @@ class UserController {
       res
         .status(200)
         .send({ success: true, message: "Usuario creado", data: user });
-    } catch (err) {
-      res.status(400).send({ success: false, message: err.message });
+    } catch (error) {
+      res.status(400).send({ success: false, message: error.message });
     }
   };
 
@@ -60,13 +60,13 @@ class UserController {
             id,
           },
         }
-        );
-        if (user[0] === 0) throw new Error("Usuario inexistente");
+      );
+      if (user[0] === 0) throw new Error(`Usuario ${id} inexistente o sin datos a modificar.`);
       res
         .status(200)
-        .send({ success: true, message: "Usuario modificado", data: user });
-    } catch (err) {
-      res.status(400).send({ success: false, message: err.message });
+        .send({ success: true, message: `Usuario ${id} modificado`, data: user });
+    } catch (error) {
+      res.status(400).send({ success: false, message: error.message });
     }
   };
 
@@ -76,12 +76,12 @@ class UserController {
       const user = await User.destroy({
         where: { id },
       });
-      if(user === 0) throw new Error("Usuario inexistente")
+      if (user === 0) throw new Error(`Usuario ${id} inexistente`);
       res
         .status(200)
         .send({ success: true, message: "Usuario eliminado", data: user });
-    } catch (err) {
-      res.status(400).send({ success: false, message: err.message });
+    } catch (error) {
+      res.status(400).send({ success: false, message: error.message });
     }
   };
 }
