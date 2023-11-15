@@ -1,7 +1,13 @@
 import { DataTypes as DT, Model } from "sequelize";
 import connection from "../connection/connection.js";
+import bcrypt from "bcrypt";
 
 class User extends Model {
+  validatePassword = async (passwordTextoPlano) => {
+    const validate = await bcrypt.compare(passwordTextoPlano, this.password);
+    return validate;
+    //Si yo utilizo este método no necesito la salt.
+  };
 }
 User.init(
   {
@@ -36,6 +42,13 @@ User.init(
         notNull: true,
       },
     },
+    salt: {
+      type: DT.STRING,
+    },
+    password: {
+      type: DT.STRING,
+      allowNull: false,
+    },
   },
   {
     sequelize: connection,
@@ -43,4 +56,11 @@ User.init(
     timestamps: false,
   }
 );
+
+User.beforeCreate(async (user) => {
+  const salt = await bcrypt.genSalt();
+  user.salt = salt;
+  const hashPassword = await bcrypt.hash(user.password, salt);
+  user.password = hashPassword;
+});
 export default User;

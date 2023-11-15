@@ -31,9 +31,6 @@ Producto.init(
     price: {
       type: DT.DOUBLE,
       allowNull: false,
-      validation: {
-        isFloat: true,
-      },
     },
   },
   {

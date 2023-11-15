@@ -6,12 +6,7 @@ Pedido.init(
   {
     total: {
       type: DT.DOUBLE,
-      allowNull: true,
-      validations: {
-        isFloat: {
-          msg:"El total debe ser un numero flotante."
-        }
-      },
+      allowNull: true
     },
   },
   {
