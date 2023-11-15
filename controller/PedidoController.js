@@ -50,12 +50,29 @@ class PedidoController {
   createPedido = async (req, res) => {
       try {
         const { total, userId, productos } = req.body;
-        const pedidoCreado = await Pedido.create({ total, userId });
 
+        let pBuscado = true;
+        for (let i = 0; i < productos.length; i++) {
+          let productoId = productos[i].id;
+          let productoBuscado = await Producto.findOne({
+            where: { id: productoId },
+          });
+          if (!productoBuscado) {
+            pBuscado = false;
+            break;
+          }
+        }
+
+        if (!pBuscado) throw new Error("No existe producto");
+
+        if (!parseFloat(total)) throw new Error("El total del ticket debe ser un número.");
+
+        const pedidoCreado = await Pedido.create({ total, userId });
         productos.map((p) => {
           const { id, pedidoProducto } = p;
           const { items_quantity } = pedidoProducto;
-
+          if (!parseInt(items_quantity))
+            throw new Error("La cantidad debe ser un número.");
           pedidoCreado.addProducto(id, {
             through: {
               items_quantity,
@@ -67,7 +84,7 @@ class PedidoController {
           .status(200)
           .send({
             success: true,
-            message: `Pedido ${id} generado`,
+            message: `Pedido generado`,
             data: pedidoCreado,
           });
       } catch (error) {
@@ -79,6 +96,9 @@ class PedidoController {
       try {
         const { id } = req.params;
         const { total, userId, productos } = req.body;
+
+        if (!parseFloat(total))
+          throw new Error("El total del ticket debe ser un número.");
         console.log(id, total, userId);
         const pedidoBuscado = await Pedido.findOne({
             where: { id },
@@ -87,8 +107,10 @@ class PedidoController {
         if (!pedidoBuscado) throw new Error(`No existe pedido ${id}`);
         
         let pBuscado = true;
+        let pCantInt = true;
         for (let i = 0; i < productos.length; i++) { 
           let productoId = productos[i].id;
+          let items_cant = productos[i].pedidoProducto.items_quantity;
           let productoBuscado = await Producto.findOne({
             where: { id: productoId },
           });
@@ -96,9 +118,15 @@ class PedidoController {
             pBuscado = false;
             break;
           }
+
+          if (!parseInt(items_cant)) { 
+            pCantInt = false;
+            break;
+          }
         }
 
         if(!pBuscado) throw new Error("No existe producto")
+        if (!pCantInt) throw new Error("La cantidad de productos debe ser un número mayor a 0.");
 
         const pedido = await Pedido.update(
           { total, userId },
@@ -112,6 +140,7 @@ class PedidoController {
         productos.map(async (p) => {
           const { items_quantity } = p.pedidoProducto;
           const productoId = p.id;
+
           await PedidoProducto.create(
             {pedidoId: id, productoId, items_quantity}
           );

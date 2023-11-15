@@ -15,6 +15,7 @@ PedidoProducto.init(
         isInt: {
           msg: "Debe ser un número.",
         },
+        isAlpha: false,
       },
     },
   },
