@@ -75,6 +75,7 @@ class RoleController {
        const role = await Role.destroy({
          where: { id },
        });
+      console.log(role)
        if (role === 0) throw new Error(`Role ${id} inexistente`);
        res
          .status(200)

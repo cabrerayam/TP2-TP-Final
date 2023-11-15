@@ -36,10 +36,10 @@ class PedidoController {
           ],
         });
           
-        if (!pedido) throw new Error("No existe pedido");
+        if (!pedido) throw new Error(`No existe pedido ${id}`);
         res.status(200).send({
           success: true,
-          message: "Pedido by Id",
+          message: `Pedido ${id} encontrado`,
           data: pedido,
         });
       } catch (error) {
@@ -67,7 +67,7 @@ class PedidoController {
           .status(200)
           .send({
             success: true,
-            message: "Pedido generado",
+            message: `Pedido ${id} generado`,
             data: pedidoCreado,
           });
       } catch (error) {
@@ -84,7 +84,7 @@ class PedidoController {
             where: { id },
         });
         
-        if (!pedidoBuscado) throw new Error("No existe pedido");
+        if (!pedidoBuscado) throw new Error(`No existe pedido ${id}`);
         
         let pBuscado = true;
         for (let i = 0; i < productos.length; i++) { 
@@ -134,11 +134,11 @@ class PedidoController {
         where: { id },
       });
       console.log(pedido);
-      if (pedido === 0) throw new Error("Pedido inexistente");
+      if (pedido === 0) throw new Error(`Pedido ${id} inexistente`);
 
       res
         .status(200)
-        .send({ success: true, message: "Pedido eliminado", data: pedido });
+        .send({ success: true, message: `Pedido ${id} eliminado`, data: pedido });
     } catch (error) {
       res.status(400).send({ success: false, message: error.message });
     }

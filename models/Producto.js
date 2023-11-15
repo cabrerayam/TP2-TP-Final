@@ -7,6 +7,22 @@ Producto.init(
     name: {
       type: DT.STRING,
       allowNull: false,
+      unique: true,
+      validate: {
+        notEmpty: true,
+        notNull: true,
+        isAlpha: {
+          msg: "El nombre solo puede contener letras.",
+        },
+        notIn: {
+          args: [["null", "NULL"]],
+          msg: "No se puede crear Producto con nombre nulo.",
+        },
+        len: {
+          args: [3],
+          msg: "Longitud mínima de nombre es de 3 caracteres.",
+        },
+      },
     },
     description: {
       type: DT.STRING,
@@ -15,6 +31,9 @@ Producto.init(
     price: {
       type: DT.DOUBLE,
       allowNull: false,
+      validation: {
+        isFloat: true,
+      },
     },
   },
   {
