@@ -6,7 +6,7 @@ const roleRoutes = Router();
 const roleController = new RoleController();
 
 
-roleRoutes.use(validateAdmin);
+// roleRoutes.use(validateAdmin);
 roleRoutes.get("", roleController.getAllRoles);
 roleRoutes.get("/:id", roleController.getRoleById);
 roleRoutes.post("/", roleController.createRole);

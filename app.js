@@ -2,6 +2,8 @@ import express from "express";
 import connection from "./connection/connection.js";
 import router from "./routes/router.js";
 import cookieParser from "cookie-parser";
+import { SERVER_PORT } from "./config/config.js";
+
 
 
 const app = express();
@@ -14,7 +16,9 @@ app.use("/api", router);
 //force:true para volver a crear todas las tablas
 //force:false sólo para crear los nuevos modelos
 await connection.sync({ force: false }).then(() => {
-  app.listen(8080, () => {
-    console.log(`app listening on port 8080 http://localhost:8080`);
+  app.listen(SERVER_PORT, () => {
+    console.log(
+      `app listening on port ${SERVER_PORT} http://localhost:${SERVER_PORT}`
+    );
   });
 });

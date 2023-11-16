@@ -1,11 +1,13 @@
 import jwt from "jsonwebtoken";
+import { SECRET } from "../config/config.js";
+
 
 export const generateToken = (payload) => {
-  const token = jwt.sign(payload, "osvaldito", { expiresIn: "2d" });
+  const token = jwt.sign(payload, SECRET, { expiresIn: "2d" });
   return token;
 };
 
 export const verifyToken = (token) => {
-  const verify = jwt.verify(token, "osvaldito");
+  const verify = jwt.verify(token, SECRET);
   return verify;
 };
