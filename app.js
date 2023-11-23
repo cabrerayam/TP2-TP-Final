@@ -15,7 +15,7 @@ app.use("/api", router);
 
 //force:true para volver a crear todas las tablas
 //force:false sólo para crear los nuevos modelos
-await connection.sync({ force: false }).then(() => {
+await connection.sync({ force: true }).then(() => {
   app.listen(SERVER_PORT, () => {
     console.log(
       `app listening on port ${SERVER_PORT} http://localhost:${SERVER_PORT}`
